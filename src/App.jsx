@@ -1,16 +1,26 @@
 import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
+import AboutPage from "./Pages/AboutPage";
+import ProductPage from "./Pages/ProductPage";
+import ContactPage from "./Pages/ContactPage";
+import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      <HomePage/>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </Router>
     </>
   );
 }
