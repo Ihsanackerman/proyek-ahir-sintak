@@ -5,6 +5,7 @@ import HomePage from "./Pages/HomePage";
 import AboutPage from "./Pages/AboutPage";
 import ProductPage from "./Pages/ProductPage";
 import ContactPage from "./Pages/ContactPage";
+import GaleriFoto from "./Pages/GaleriFoto";
 import NotFoundPage from "./Pages/NotFoundPage";
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/product" element={<ProductPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/galeri" element={<GaleriFoto />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Router>
