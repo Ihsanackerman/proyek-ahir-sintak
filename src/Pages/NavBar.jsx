@@ -59,7 +59,7 @@ function NavBar() {
           {/* Logo dan Judul */}
           <Link className="btn btn-ghost text-xl" to="/">
             <img
-              src="/WhatsApp Image 2025-05-28 at 22.51.31.jpeg"
+              src="public\kopibengkel.jpeg"
               alt="Coffee Icon"
               className="w-10 h-10 mr-2 rounded-full"
             />
