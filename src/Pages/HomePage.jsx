@@ -10,3 +10,13 @@ function HomePage() {
 }
 
 export default HomePage;
+
+function HeroSection(){
+  return(
+    <>
+    
+    
+    </>
+
+  );
+}

@@ -29,7 +29,7 @@ function NavBar() {
               className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
             >
               <li>
-                <a>Item 1</a>
+                <Link>Home</Link>
               </li>
               <li>
                 <a>Parent</a>
@@ -52,23 +52,24 @@ function NavBar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <a>Item 1</a>
+              <Link className="font-bold hover text-amber-800" to="/">
+                Home
+              </Link>
             </li>
             <li>
-              <details>
-                <summary>Parent</summary>
-                <ul className="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li>
-                    <a>Submenu 2</a>
-                  </li>
-                </ul>
-              </details>
+              <Link className="font-bold hover text-amber-800" to="/">
+                About Us
+              </Link>
             </li>
             <li>
-              <a>Item 3</a>
+              <Link className="font-bold hover text-amber-800" to="/">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link className="font-bold hover text-amber-800" to="/">
+                Home
+              </Link>
             </li>
           </ul>
         </div>
