@@ -1,35 +1,59 @@
-"use client";
+import React, { useState } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import { IoIosArrowRoundForward } from "react-icons/io";
-import { RiGlobalLine } from "react-icons/ri";
-import { FiCoffee } from "react-icons/fi";
-import { LuLeaf } from "react-icons/lu";
-import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function HomePage() {
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showWorkshopModal, setShowWorkshopModal] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleOrderNow = (product) => {
+    setSelectedProduct(product);
+    setShowPaymentModal(true);
+  };
+
+  const handleVisitWorkshop = () => {
+    setShowWorkshopModal(true);
+  };
+
+  const closePaymentModal = () => {
+    setShowPaymentModal(false);
+    setSelectedProduct(null);
+  };
+
+  const closeWorkshopModal = () => {
+    setShowWorkshopModal(false);
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <NavBar />
-      <HeroSection />
+      <HeroSection onVisitWorkshop={handleVisitWorkshop} />
       <WhyChooseUs />
-      <OurProducts />
+      <OurProducts onOrderNow={handleOrderNow} />
       <ClientTestimonials />
       <Footer />
+
+      {showPaymentModal && (
+        <PaymentModal product={selectedProduct} onClose={closePaymentModal} />
+      )}
+
+      {showWorkshopModal && <WorkshopModal onClose={closeWorkshopModal} />}
     </div>
   );
 }
 
 export default HomePage;
 
-function HeroSection() {
+function HeroSection({ onVisitWorkshop }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background */}
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage: "url('/src/assets/bg_cafe.jpg')",
+          backgroundImage: "url('src/assets/bg_cafe.jpg')",
         }}
       >
         <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/60 to-black/70"></div>
@@ -38,26 +62,26 @@ function HeroSection() {
       {/* Subtle floating elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-10 opacity-20 animate-pulse">
-          <FiCoffee className="h-16 w-16 text-white" />
+          <span className="text-6xl">☕</span>
         </div>
         <div
           className="absolute top-1/3 right-20 opacity-15 animate-pulse"
           style={{ animationDelay: "1s" }}
         >
-          <LuLeaf className="h-12 w-12 text-white" />
+          <span className="text-4xl">🌿</span>
         </div>
         <div
           className="absolute bottom-1/4 left-1/4 opacity-15 animate-pulse"
           style={{ animationDelay: "2s" }}
         >
-          <RiGlobalLine className="h-14 w-14 text-white" />
+          <span className="text-5xl">🌍</span>
         </div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 text-center max-w-5xl mx-auto px-6">
         <div className="mb-8 inline-flex items-center bg-white/10 backdrop-blur-md text-white border border-white/20 px-6 py-3 rounded-full">
-          <FiCoffee className="h-4 w-4 mr-2" />
+          <span className="mr-2">☕</span>
           <span className="font-medium">
             Crafting Perfect Coffee Since 2020
           </span>
@@ -66,7 +90,7 @@ function HeroSection() {
         <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight">
           Welcome to{" "}
           <span className="bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent">
-            Bengkel Kopi
+            CoffeeBean Co.
           </span>
         </h1>
 
@@ -77,11 +101,21 @@ function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
-          <button className="group bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center">
+          {/* Perbaikan: Ganti button dengan Link */}
+          <Link
+            to="/product"
+            className="group bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center"
+          >
             Explore Our Menu
-            <IoIosArrowRoundForward className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-          </button>
-          <button className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105">
+            <span className="ml-2 group-hover:translate-x-1 transition-transform">
+              →
+            </span>
+          </Link>
+
+          <button
+            onClick={onVisitWorkshop}
+            className="border-2 border-white text-white hover:bg-white hover:text-gray-900 px-8 py-4 text-lg font-medium rounded-xl transition-all duration-300 hover:scale-105"
+          >
             Visit Our Workshop
           </button>
         </div>
@@ -97,45 +131,33 @@ function HeroSection() {
   );
 }
 
+// ... sisanya tetap sama seperti kode sebelumnya ...
+
 function WhyChooseUs() {
   const features = [
     {
-      icon: <RiGlobalLine className="h-8 w-8" />,
+      icon: "🌍",
       title: "Global Network",
       description:
         "Supplying the finest beans to top roasters and distributors around the world.",
       gradient: "from-blue-500 to-blue-600",
     },
     {
-      icon: <FiCoffee className="h-8 w-8" />,
+      icon: "☕",
       title: "Premium Selection",
       description:
         "Expertly curated Arabica and Robusta blends sourced from sustainable farms.",
       gradient: "from-amber-500 to-amber-600",
     },
     {
-      icon: <LuLeaf className="h-8 w-8" />,
+      icon: "🌿",
       title: "Eco-Friendly Practices",
       description:
         "Committed to environmentally responsible farming and fair trade principles.",
       gradient: "from-green-500 to-green-600",
     },
     {
-      icon: (
-        <svg
-          className="h-8 w-8"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
+      icon: "✅",
       title: "Quality Assurance",
       description:
         "Every batch is carefully tested and approved by our expert quality control team.",
@@ -167,7 +189,7 @@ function WhyChooseUs() {
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div
-                className={`bg-gradient-to-r ${feature.gradient} w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}
+                className={`bg-gradient-to-r ${feature.gradient} w-16 h-16 rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 text-2xl`}
               >
                 {feature.icon}
               </div>
@@ -185,37 +207,61 @@ function WhyChooseUs() {
   );
 }
 
-function OurProducts() {
+function OurProducts({ onOrderNow }) {
   const products = [
     {
+      id: 1,
       name: "Signature Bengkel Blend",
       category: "House Special",
       description:
         "Our signature blend combining the best of Sumatran and Javanese beans with notes of dark chocolate and caramel.",
-      price: "Rp 45,000",
-      image: "/src/assets/product.jpeg",
+      price: "Rp 45.000",
+      image:
+        "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=400&h=300&fit=crop",
       badge: "Best Seller",
       badgeColor: "bg-red-500",
+      origin: "Sumatra & Java Blend",
+      processing: "Medium Roast",
+      altitude: "1,200-1,500 masl",
+      flavor: "Dark Chocolate, Caramel, Nutty",
+      available: "Year-round",
+      rating: 4.9,
     },
     {
+      id: 2,
       name: "Workshop Espresso",
       category: "Espresso Based",
       description:
         "Bold and intense espresso perfect for those who appreciate the pure essence of coffee craftsmanship.",
-      price: "Rp 25,000",
-      image: "/src/assets/product2.jpeg",
+      price: "Rp 25.000",
+      image:
+        "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=400&h=300&fit=crop",
       badge: "Strong",
       badgeColor: "bg-gray-800",
+      origin: "East Java",
+      processing: "Dark Roast",
+      altitude: "1,000-1,400 masl",
+      flavor: "Bold, Intense, Smoky",
+      available: "Year-round",
+      rating: 4.7,
     },
     {
+      id: 3,
       name: "Artisan Cold Brew",
       category: "Cold Coffee",
       description:
         "Slow-brewed for 18 hours to create a smooth, refreshing coffee experience with natural sweetness.",
-      price: "Rp 35,000",
-      image: "/src/assets/product3.jpeg",
+      price: "Rp 35.000",
+      image:
+        "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400&h=300&fit=crop",
       badge: "Refreshing",
       badgeColor: "bg-blue-500",
+      origin: "Bali Kintamani",
+      processing: "Cold Brew",
+      altitude: "1,200-1,600 masl",
+      flavor: "Smooth, Sweet, Refreshing",
+      available: "Year-round",
+      rating: 4.8,
     },
   ];
 
@@ -252,6 +298,12 @@ function OurProducts() {
                 >
                   {product.badge}
                 </div>
+                <div className="absolute top-4 right-4 flex items-center bg-white rounded-full px-2 py-1">
+                  <span className="text-yellow-400">⭐</span>
+                  <span className="text-sm font-medium ml-1">
+                    {product.rating}
+                  </span>
+                </div>
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300"></div>
               </div>
 
@@ -271,7 +323,10 @@ function OurProducts() {
                   <span className="text-2xl font-bold text-amber-600">
                     {product.price}
                   </span>
-                  <button className="bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                  <button
+                    onClick={() => onOrderNow(product)}
+                    className="bg-gradient-to-r from-gray-800 to-gray-900 hover:from-gray-900 hover:to-black text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  >
                     Order Now
                   </button>
                 </div>
@@ -287,27 +342,30 @@ function OurProducts() {
 function ClientTestimonials() {
   const testimonials = [
     {
-      name: "Global Beans Co.",
-      role: "International Distributor",
+      name: "Ahmad Rizki",
+      role: "CEO Global Beans Co.",
       quote:
-        "We've sourced from many suppliers, but Bengkel Kopi stands out for consistency and flavor. Their beans are the foundation of our premium blends.",
-      image: "/placeholder.svg?height=80&width=80",
+        "We've sourced from many suppliers, but CoffeeBean Co. stands out for consistency and flavor. Their beans are the foundation of our premium blends.",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
       rating: 5,
     },
     {
-      name: "CoffeeCraft Roasters",
-      role: "Specialty Roaster",
+      name: "Sarah Johnson",
+      role: "Owner CoffeeCraft Roasters",
       quote:
         "Their beans are the base of our best-selling blends. Truly authentic Indonesian taste with exceptional quality control.",
-      image: "/placeholder.svg?height=80&width=80",
+      image:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&h=150&fit=crop&crop=face",
       rating: 5,
     },
     {
-      name: "IndoBrew Distributors",
-      role: "Regional Partner",
+      name: "David Chen",
+      role: "Director IndoBrew Distributors",
       quote:
         "Excellent service and outstanding quality! Our go-to partner for premium beans. They never disappoint our customers.",
-      image: "/placeholder.svg?height=80&width=80",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
       rating: 5,
     },
   ];
@@ -344,22 +402,24 @@ function ClientTestimonials() {
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 md:p-12">
             <div className="flex flex-col md:flex-row items-center gap-8">
               <div className="flex-shrink-0">
-                <div className="w-24 h-24 border-4 border-amber-400 rounded-full overflow-hidden bg-gradient-to-r from-amber-500 to-amber-600 flex items-center justify-center">
-                  <span className="text-white font-bold text-2xl">
-                    {testimonials[currentIndex].name.charAt(0)}
-                  </span>
+                <div className="w-24 h-24 border-4 border-amber-400 rounded-full overflow-hidden">
+                  <img
+                    src={testimonials[currentIndex].image || "/placeholder.svg"}
+                    alt={testimonials[currentIndex].name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = "https://via.placeholder.com/150";
+                    }}
+                  />
                 </div>
               </div>
               <div className="text-center md:text-left flex-1">
                 <div className="flex justify-center md:justify-start mb-4">
                   {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="h-5 w-5 text-amber-400 fill-current"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
+                    <span key={i} className="text-amber-400 text-xl">
+                      ⭐
+                    </span>
                   ))}
                 </div>
                 <blockquote className="text-lg md:text-xl text-white mb-6 leading-relaxed font-light italic">
@@ -383,19 +443,7 @@ function ClientTestimonials() {
               onClick={prevTestimonial}
               className="border border-white/20 text-white hover:bg-white/10 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
+              ←
             </button>
 
             <div className="flex gap-2">
@@ -416,23 +464,462 @@ function ClientTestimonials() {
               onClick={nextTestimonial}
               className="border border-white/20 text-white hover:bg-white/10 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-105"
             >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              →
             </button>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function PaymentModal({ product, onClose }) {
+  const [customerName, setCustomerName] = useState("");
+  const [quantity, setQuantity] = useState(1);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // Calculate total price
+    const priceNumber = parseInt(product.price.replace(/[^\d]/g, ""));
+    const totalPrice = priceNumber * quantity;
+
+    // Here you can add your payment processing logic
+    alert(
+      `Pesanan berhasil!\n\nNama: ${customerName}\nProduk: ${
+        product.name
+      }\nJumlah: ${quantity} kg\nTotal: Rp ${totalPrice.toLocaleString(
+        "id-ID"
+      )}\nTelepon: ${phoneNumber}\nAlamat: ${address}`
+    );
+
+    onClose();
+  };
+
+  const priceNumber = parseInt(product.price.replace(/[^\d]/g, ""));
+  const totalPrice = priceNumber * quantity;
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">Form Pemesanan</h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Product Info */}
+          <div className="bg-amber-50 rounded-lg p-4 mb-6">
+            <div className="flex items-center space-x-4">
+              <img
+                src={product.image || "/placeholder.svg"}
+                alt={product.name}
+                className="w-16 h-16 object-cover rounded-lg"
+              />
+              <div>
+                <h3 className="font-bold text-gray-900">{product.name}</h3>
+                <p className="text-sm text-gray-600">{product.category}</p>
+                <p className="text-lg font-bold text-amber-800">
+                  {product.price}/kg
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nama Lengkap *
+              </label>
+              <input
+                type="text"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                placeholder="Masukkan nama lengkap"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Nomor Telepon *
+              </label>
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                placeholder="08xxxxxxxxxx"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Jumlah (kg) *
+              </label>
+              <div className="flex items-center space-x-3">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center font-bold"
+                >
+                  -
+                </button>
+                <input
+                  type="number"
+                  value={quantity}
+                  onChange={(e) =>
+                    setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                  }
+                  className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                  min="1"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center font-bold"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Alamat Pengiriman *
+              </label>
+              <textarea
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                placeholder="Masukkan alamat lengkap"
+                rows="3"
+                required
+              />
+            </div>
+
+            {/* Total Price */}
+            <div className="bg-gray-50 rounded-lg p-4">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-gray-700">Total Harga:</span>
+                <span className="text-2xl font-bold text-amber-800">
+                  Rp {totalPrice.toLocaleString("id-ID")}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">
+                {quantity} kg × {product.price}
+              </p>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex space-x-3 pt-4">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium"
+              >
+                Batal
+              </button>
+              <button
+                type="submit"
+                className="flex-1 px-4 py-2 bg-amber-800 hover:bg-amber-900 text-white rounded-md font-medium"
+              >
+                Pesan Sekarang
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WorkshopModal({ onClose }) {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [participants, setParticipants] = useState(1);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [specialRequests, setSpecialRequests] = useState("");
+
+  const availableTimes = ["09:00", "11:00", "13:00", "15:00", "17:00"];
+  const workshopPrice = 150000; // Rp 150.000 per person
+  const totalPrice = participants * workshopPrice;
+
+  // Get tomorrow's date as the minimum date
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const minDate = tomorrow.toISOString().split("T")[0];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    alert(`Reservasi Workshop Berhasil!
+    
+Nama: ${name}
+Email: ${email}
+Telepon: ${phone}
+Tanggal: ${selectedDate}
+Waktu: ${selectedTime}
+Jumlah Peserta: ${participants}
+Total Biaya: Rp ${totalPrice.toLocaleString("id-ID")}
+Permintaan Khusus: ${specialRequests || "Tidak ada"}`);
+
+    onClose();
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="p-6">
+          {/* Header */}
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold text-gray-900">
+              Reservasi Workshop Kopi
+            </h2>
+            <button
+              onClick={onClose}
+              className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+            >
+              ×
+            </button>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {/* Left Column - Workshop Info */}
+            <div>
+              <div className="rounded-lg overflow-hidden mb-6">
+                <img
+                  src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=600&h=400&fit=crop"
+                  alt="Coffee Workshop"
+                  className="w-full h-64 object-cover"
+                />
+              </div>
+
+              <h3 className="text-xl font-bold text-gray-900 mb-4">
+                CoffeeBean Co. Workshop Experience
+              </h3>
+
+              <div className="space-y-4 text-gray-700">
+                <p>
+                  Ikuti workshop kopi kami dan pelajari seni pembuatan kopi dari
+                  para ahli. Workshop ini mencakup:
+                </p>
+
+                <ul className="list-disc pl-5 space-y-2">
+                  <li>Pengenalan berbagai jenis biji kopi Indonesia</li>
+                  <li>Teknik roasting dan pengaruhnya terhadap rasa</li>
+                  <li>
+                    Metode brewing yang berbeda (Pour Over, French Press,
+                    Espresso)
+                  </li>
+                  <li>Sesi cupping untuk melatih palate Anda</li>
+                  <li>Sertifikat keikutsertaan</li>
+                  <li>Goodie bag berisi 100gr kopi pilihan</li>
+                </ul>
+
+                <div className="bg-amber-50 p-4 rounded-lg mt-6">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Durasi:</span>
+                    <span>2 jam</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Kapasitas:</span>
+                    <span>Maksimal 10 orang</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">Harga:</span>
+                    <span className="font-bold text-amber-800">
+                      Rp 150.000/orang
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Booking Form */}
+            <div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nama Lengkap *
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="Masukkan nama lengkap"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="email@example.com"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nomor Telepon *
+                  </label>
+                  <input
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="08xxxxxxxxxx"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Tanggal Workshop *
+                  </label>
+                  <input
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    min={minDate}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Waktu Workshop *
+                  </label>
+                  <select
+                    value={selectedTime}
+                    onChange={(e) => setSelectedTime(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Pilih waktu</option>
+                    {availableTimes.map((time) => (
+                      <option key={time} value={time}>
+                        {time} WIB
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Jumlah Peserta *
+                  </label>
+                  <div className="flex items-center space-x-3">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setParticipants(Math.max(1, participants - 1))
+                      }
+                      className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center font-bold"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="number"
+                      value={participants}
+                      onChange={(e) =>
+                        setParticipants(
+                          Math.max(
+                            1,
+                            Math.min(10, parseInt(e.target.value) || 1)
+                          )
+                        )
+                      }
+                      className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                      min="1"
+                      max="10"
+                      required
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setParticipants(Math.min(10, participants + 1))
+                      }
+                      className="w-10 h-10 bg-gray-200 hover:bg-gray-300 rounded-md flex items-center justify-center font-bold"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Permintaan Khusus
+                  </label>
+                  <textarea
+                    value={specialRequests}
+                    onChange={(e) => setSpecialRequests(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                    placeholder="Informasi tambahan atau permintaan khusus"
+                    rows="3"
+                  />
+                </div>
+
+                {/* Total Price */}
+                <div className="bg-amber-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium text-gray-700">
+                      Total Biaya:
+                    </span>
+                    <span className="text-2xl font-bold text-amber-800">
+                      Rp {totalPrice.toLocaleString("id-ID")}
+                    </span>
+                  </div>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {participants} orang × Rp{" "}
+                    {workshopPrice.toLocaleString("id-ID")}
+                  </p>
+                </div>
+
+                {/* Buttons */}
+                <div className="flex space-x-3 pt-4">
+                  <button
+                    type="button"
+                    onClick={onClose}
+                    className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 font-medium"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 px-4 py-2 bg-amber-800 hover:bg-amber-900 text-white rounded-md font-medium"
+                  >
+                    Reservasi Sekarang
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
