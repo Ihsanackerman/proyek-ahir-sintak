@@ -30,8 +30,11 @@ function HomePage() {
     <div className="min-h-screen bg-white">
       <NavBar />
       <HeroSection onVisitWorkshop={handleVisitWorkshop} />
+      <SectionDivider />
       <WhyChooseUs />
+      <SectionDivider />
       <OurProducts onOrderNow={handleOrderNow} />
+      <SectionDivider />
       <ClientTestimonials />
       <Footer />
 
@@ -45,6 +48,26 @@ function HomePage() {
 }
 
 export default HomePage;
+
+// Komponen pembatas section
+function SectionDivider() {
+  return (
+    <div className="relative py-8">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-gray-200"></div>
+      </div>
+      <div className="relative flex justify-center">
+        <div className="bg-white px-6">
+          <div className="flex items-center space-x-2">
+            <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
+            <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-amber-400 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function HeroSection({ onVisitWorkshop }) {
   return (
@@ -130,8 +153,6 @@ function HeroSection({ onVisitWorkshop }) {
     </section>
   );
 }
-
-// ... sisanya tetap sama seperti kode sebelumnya ...
 
 function WhyChooseUs() {
   const features = [
@@ -483,7 +504,7 @@ function PaymentModal({ product, onClose }) {
     e.preventDefault();
 
     // Calculate total price
-    const priceNumber = parseInt(product.price.replace(/[^\d]/g, ""));
+    const priceNumber = Number.parseInt(product.price.replace(/[^\d]/g, ""));
     const totalPrice = priceNumber * quantity;
 
     // Here you can add your payment processing logic
@@ -498,7 +519,7 @@ function PaymentModal({ product, onClose }) {
     onClose();
   };
 
-  const priceNumber = parseInt(product.price.replace(/[^\d]/g, ""));
+  const priceNumber = Number.parseInt(product.price.replace(/[^\d]/g, ""));
   const totalPrice = priceNumber * quantity;
 
   return (
@@ -580,7 +601,9 @@ function PaymentModal({ product, onClose }) {
                   type="number"
                   value={quantity}
                   onChange={(e) =>
-                    setQuantity(Math.max(1, parseInt(e.target.value) || 1))
+                    setQuantity(
+                      Math.max(1, Number.parseInt(e.target.value) || 1)
+                    )
                   }
                   className="w-20 px-3 py-2 border border-gray-300 rounded-md text-center focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
                   min="1"
@@ -849,7 +872,7 @@ Permintaan Khusus: ${specialRequests || "Tidak ada"}`);
                         setParticipants(
                           Math.max(
                             1,
-                            Math.min(10, parseInt(e.target.value) || 1)
+                            Math.min(10, Number.parseInt(e.target.value) || 1)
                           )
                         )
                       }

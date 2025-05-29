@@ -198,8 +198,8 @@ function ContactInfo() {
         "Saturday - Sunday: 08:00 - 23:00",
       ],
       action: {
-        text: "Reservation",
-        link: "#reservation",
+        text: "Call to Reserve",
+        link: "tel:+627112345678",
       },
       color: "from-amber-500 to-amber-600",
     },

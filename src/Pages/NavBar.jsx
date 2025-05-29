@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+"use client";
+
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItems, setCartItems] = useState(3); // Example cart count
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Handle scroll effect
   useEffect(() => {
@@ -26,6 +31,36 @@ function NavBar() {
     { path: "/galeri", label: "Gallery" },
   ];
 
+  // Simple functions
+  const openCart = () => setIsCartOpen(true);
+  const closeCart = () => setIsCartOpen(false);
+  const goToCart = () => {
+    navigate("/cart");
+    closeCart();
+  };
+  const goToCheckout = () => {
+    navigate("/contact"); // Redirect to contact page for ordering
+    closeCart();
+  };
+  const goToContact = () => {
+    navigate("/contact");
+    setIsMobileMenuOpen(false);
+  };
+  const removeItem = () => {
+    setCartItems((prev) => Math.max(0, prev - 1));
+  };
+
+  // Close cart when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isCartOpen && !event.target.closest(".cart-dropdown")) {
+        closeCart();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isCartOpen]);
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -41,7 +76,6 @@ function NavBar() {
             to="/"
             className="flex items-center space-x-3 group transition-transform duration-300 hover:scale-105"
           >
-            {/* Coffee Logo - Orange Circle */}
             <div className="relative">
               <div className="w-10 h-10 bg-orange-600 rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                 <svg
@@ -53,8 +87,6 @@ function NavBar() {
                 </svg>
               </div>
             </div>
-
-            {/* Brand Name */}
             <div className="flex flex-col">
               <span className="text-xl font-bold text-gray-900">
                 CoffeeBean Co.
@@ -84,28 +116,171 @@ function NavBar() {
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
-            {/* Shopping Cart */}
-            <button className="relative p-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-colors duration-300">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            {/* Shopping Cart with Dropdown */}
+            <div className="relative cart-dropdown">
+              <button
+                onClick={openCart}
+                className="relative p-2 rounded-lg text-gray-700 hover:text-orange-600 hover:bg-orange-50 transition-colors duration-300"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
-                />
-              </svg>
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center">
-                3
-              </span>
-            </button>
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+                  />
+                </svg>
+                {cartItems > 0 && (
+                  <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-orange-600 text-white text-xs flex items-center justify-center">
+                    {cartItems}
+                  </span>
+                )}
+              </button>
+
+              {/* Cart Dropdown */}
+              {isCartOpen && (
+                <div className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Shopping Cart
+                    </h3>
+                    {cartItems > 0 ? (
+                      <div className="space-y-3">
+                        {/* Cart Items */}
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=50&h=50&fit=crop"
+                              alt="Coffee"
+                              className="w-12 h-12 rounded-lg object-cover"
+                            />
+                            <div>
+                              <p className="font-medium text-gray-900">
+                                Arabica Premium
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                1kg - Rp 42.000
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={removeItem}
+                            className="text-red-500 hover:text-red-700 transition-colors"
+                          >
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                          <div className="flex items-center space-x-3">
+                            <img
+                              src="https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=50&h=50&fit=crop"
+                              alt="Coffee"
+                              className="w-12 h-12 rounded-lg object-cover"
+                            />
+                            <div>
+                              <p className="font-medium text-gray-900">
+                                Robusta Special
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                500g - Rp 29.000
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            onClick={removeItem}
+                            className="text-red-500 hover:text-red-700 transition-colors"
+                          >
+                            <svg
+                              className="w-5 h-5"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+
+                        <div className="border-t pt-3 mt-3">
+                          <div className="flex justify-between items-center mb-3">
+                            <span className="font-semibold text-gray-900">
+                              Total: Rp 71.000
+                            </span>
+                          </div>
+                          <div className="space-y-2">
+                            <button
+                              onClick={goToCart}
+                              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 py-2 px-4 rounded-lg font-medium transition-colors"
+                            >
+                              View Cart
+                            </button>
+                            <button
+                              onClick={goToCheckout}
+                              className="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 px-4 rounded-lg font-medium transition-colors"
+                            >
+                              Checkout
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <svg
+                          className="w-16 h-16 text-gray-300 mx-auto mb-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H17M9 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM20.5 19.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"
+                          />
+                        </svg>
+                        <p className="text-gray-500">Your cart is empty</p>
+                        <Link
+                          to="/product"
+                          onClick={closeCart}
+                          className="mt-3 text-orange-600 hover:text-orange-700 font-medium"
+                        >
+                          Start Shopping
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Get Started Button */}
-            <button className="hidden sm:flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg group">
+            <button
+              onClick={goToContact}
+              className="hidden sm:flex items-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg group"
+            >
               <span>Get Started</span>
               <svg
                 className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
@@ -180,8 +355,10 @@ function NavBar() {
                 </Link>
               ))}
 
-              {/* Mobile Get Started Button */}
-              <button className="mt-4 flex items-center justify-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300">
+              <button
+                onClick={goToContact}
+                className="mt-4 flex items-center justify-center space-x-2 bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300"
+              >
                 <span>Get Started</span>
                 <svg
                   className="w-4 h-4"
