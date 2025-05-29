@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+"use client";
+
+import { useState } from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 
@@ -34,7 +36,7 @@ function KontakPage() {
         submitted: true,
         error: false,
         message:
-          "Pesan Anda telah berhasil dikirim! Kami akan menghubungi Anda segera.",
+          "Your message has been sent successfully! We will contact you soon.",
       });
 
       // Reset form after successful submission
@@ -63,14 +65,18 @@ function KontakPage() {
       <NavBar />
       <div className="pt-16">
         <ContactHero />
+        <SectionDivider />
         <ContactInfo />
+        <SectionDivider />
         <ContactForm
           formData={formData}
           handleChange={handleChange}
           handleSubmit={handleSubmit}
           formStatus={formStatus}
         />
+        <SectionDivider />
         <MapSection />
+        <SectionDivider />
         <FaqSection />
         <Footer />
       </div>
@@ -79,6 +85,26 @@ function KontakPage() {
 }
 
 export default KontakPage;
+
+// Komponen pembatas section yang menarik
+function SectionDivider() {
+  return (
+    <div className="relative py-8">
+      <div className="absolute inset-0 flex items-center">
+        <div className="w-full border-t border-amber-200"></div>
+      </div>
+      <div className="relative flex justify-center">
+        <div className="bg-white px-6">
+          <div className="flex items-center space-x-3">
+            <div className="w-2 h-2 bg-amber-300 rounded-full"></div>
+            <div className="w-3 h-3 bg-amber-500 rounded-full"></div>
+            <div className="w-2 h-2 bg-amber-300 rounded-full"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function ContactHero() {
   return (
@@ -114,18 +140,18 @@ function ContactHero() {
       <div className="container mx-auto px-6 text-center relative z-10">
         <div className="mb-8 inline-flex items-center bg-[#fef3d1] text-amber-800 px-6 py-3 rounded-full border border-amber-200">
           <span className="mr-2">📞</span>
-          <span className="font-medium">Hubungi Kami</span>
+          <span className="font-medium">Contact Us</span>
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold mb-8">
-          <span className="text-orange-600">Kontak</span>
+          <span className="text-orange-600">Contact</span>
           <br />
           <span className="text-gray-800">CoffeeBean Co.</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-600 max-w-4xl mx-auto leading-relaxed font-light">
-          Kami selalu siap mendengarkan Anda. Hubungi kami untuk pertanyaan,
-          saran, atau sekadar untuk mengobrol tentang kopi.
+          We're always ready to listen to you. Contact us for questions,
+          suggestions, or just to chat about coffee.
         </p>
       </div>
     </section>
@@ -136,11 +162,11 @@ function ContactInfo() {
   const contactMethods = [
     {
       icon: "📱",
-      title: "Telepon & WhatsApp",
-      details: ["+62 21 1234 5678", "+62 812 3456 7890 (WhatsApp)"],
+      title: "Phone & WhatsApp",
+      details: ["+62 711 234 5678", "+62 812 3456 7890 (WhatsApp)"],
       action: {
-        text: "Hubungi Sekarang",
-        link: "tel:+622112345678",
+        text: "Call Now",
+        link: "tel:+627112345678",
       },
       color: "from-green-500 to-green-600",
     },
@@ -149,30 +175,30 @@ function ContactInfo() {
       title: "Email",
       details: ["info@coffeebean.co.id", "orders@coffeebean.co.id"],
       action: {
-        text: "Kirim Email",
+        text: "Send Email",
         link: "mailto:info@coffeebean.co.id",
       },
       color: "from-blue-500 to-blue-600",
     },
     {
       icon: "📍",
-      title: "Lokasi",
-      details: ["Jl. Kopi Arabika No. 123", "Jakarta Selatan, 12345"],
+      title: "Location",
+      details: ["Jl. Kopi No. 123", "Palembang, Sumatera Selatan 30111"],
       action: {
-        text: "Lihat di Maps",
+        text: "View on Maps",
         link: "#map-section",
       },
       color: "from-red-500 to-red-600",
     },
     {
       icon: "🕒",
-      title: "Jam Operasional",
+      title: "Business Hours",
       details: [
-        "Senin - Jumat: 07:00 - 22:00",
-        "Sabtu - Minggu: 08:00 - 23:00",
+        "Monday - Friday: 07:00 - 22:00",
+        "Saturday - Sunday: 08:00 - 23:00",
       ],
       action: {
-        text: "Reservasi",
+        text: "Reservation",
         link: "#reservation",
       },
       color: "from-amber-500 to-amber-600",
@@ -223,11 +249,11 @@ function ContactInfo() {
 
 function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
   const subjectOptions = [
-    { value: "general", label: "Pertanyaan Umum" },
-    { value: "order", label: "Pesanan & Pengiriman" },
-    { value: "wholesale", label: "Kerjasama Bisnis" },
-    { value: "career", label: "Karir" },
-    { value: "feedback", label: "Saran & Masukan" },
+    { value: "general", label: "General Inquiry" },
+    { value: "order", label: "Orders & Shipping" },
+    { value: "wholesale", label: "Business Cooperation" },
+    { value: "career", label: "Careers" },
+    { value: "feedback", label: "Suggestions & Feedback" },
   ];
 
   return (
@@ -236,11 +262,11 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Kirim Pesan Kepada Kami
+              Send Us a Message
             </h2>
             <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-              Ada pertanyaan, saran, atau ingin bekerja sama dengan kami? Isi
-              formulir di bawah ini dan tim kami akan segera menghubungi Anda.
+              Have questions, suggestions, or want to work with us? Fill out the
+              form below and our team will contact you soon.
             </p>
           </div>
 
@@ -267,7 +293,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                         htmlFor="name"
                         className="block text-sm font-medium text-gray-700 mb-2"
                       >
-                        Nama Lengkap *
+                        Full Name *
                       </label>
                       <input
                         type="text"
@@ -276,7 +302,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                         value={formData.name}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                        placeholder="Masukkan nama lengkap"
+                        placeholder="Enter your full name"
                         required
                       />
                     </div>
@@ -307,7 +333,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                         htmlFor="phone"
                         className="block text-sm font-medium text-gray-700 mb-2"
                       >
-                        Nomor Telepon
+                        Phone Number
                       </label>
                       <input
                         type="tel"
@@ -325,7 +351,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                         htmlFor="subject"
                         className="block text-sm font-medium text-gray-700 mb-2"
                       >
-                        Subjek *
+                        Subject *
                       </label>
                       <select
                         id="subject"
@@ -349,7 +375,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                       htmlFor="message"
                       className="block text-sm font-medium text-gray-700 mb-2"
                     >
-                      Pesan *
+                      Message *
                     </label>
                     <textarea
                       id="message"
@@ -358,7 +384,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                       onChange={handleChange}
                       rows="5"
                       className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                      placeholder="Tulis pesan Anda di sini..."
+                      placeholder="Write your message here..."
                       required
                     ></textarea>
                   </div>
@@ -376,8 +402,8 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                       htmlFor="subscribe"
                       className="ml-2 block text-sm text-gray-700"
                     >
-                      Saya ingin menerima newsletter dan promo dari CoffeeBean
-                      Co.
+                      I would like to receive newsletters and promotions from
+                      CoffeeBean Co.
                     </label>
                   </div>
 
@@ -386,7 +412,7 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                       type="submit"
                       className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-3 px-6 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
                     >
-                      Kirim Pesan
+                      Send Message
                     </button>
                   </div>
                 </form>
@@ -403,14 +429,14 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                 <div className="h-full bg-gradient-to-b from-amber-600/40 to-amber-900/60 p-10 flex flex-col justify-end">
                   <div className="text-white">
                     <h3 className="text-2xl font-bold mb-4">
-                      Hubungi Kami Langsung
+                      Contact Us Directly
                     </h3>
                     <div className="space-y-4">
                       <div className="flex items-start">
                         <span className="mr-3 text-xl">📱</span>
                         <div>
-                          <p className="font-medium">Telepon</p>
-                          <p className="text-white/80">+62 21 1234 5678</p>
+                          <p className="font-medium">Phone</p>
+                          <p className="text-white/80">+62 711 234 5678</p>
                         </div>
                       </div>
 
@@ -425,9 +451,9 @@ function ContactForm({ formData, handleChange, handleSubmit, formStatus }) {
                       <div className="flex items-start">
                         <span className="mr-3 text-xl">🕒</span>
                         <div>
-                          <p className="font-medium">Jam Operasional</p>
+                          <p className="font-medium">Business Hours</p>
                           <p className="text-white/80">
-                            Setiap Hari: 07:00 - 22:00
+                            Every Day: 07:00 - 22:00
                           </p>
                         </div>
                       </div>
@@ -449,11 +475,11 @@ function MapSection() {
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Temukan Kami
+            Find Us
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Kunjungi CoffeeBean Co. dan nikmati pengalaman kopi terbaik langsung
-            di tempat kami.
+            Visit CoffeeBean Co. and enjoy the best coffee experience directly
+            at our location.
           </p>
         </div>
 
@@ -475,7 +501,7 @@ function MapSection() {
                       Google Maps
                     </h3>
                     <p className="text-gray-600 mb-4">
-                      Peta interaktif akan ditampilkan di sini.
+                      Interactive map will be displayed here.
                     </p>
                     <a
                       href="https://maps.google.com"
@@ -483,7 +509,7 @@ function MapSection() {
                       rel="noopener noreferrer"
                       className="inline-flex items-center bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-lg transition-colors"
                     >
-                      Buka di Google Maps
+                      Open in Google Maps
                       <span className="ml-2">→</span>
                     </a>
                   </div>
@@ -494,58 +520,58 @@ function MapSection() {
             {/* Location Details */}
             <div className="md:w-1/3 p-8 bg-gradient-to-br from-gray-50 to-gray-100">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Lokasi Kami
+                Our Location
               </h3>
 
               <div className="space-y-6">
                 <div>
                   <h4 className="text-lg font-medium text-gray-900 mb-2">
-                    CoffeeBean Co. - Jakarta Selatan
+                    CoffeeBean Co. - Palembang
                   </h4>
                   <p className="text-gray-600">
-                    Jl. Kopi Arabika No. 123
+                    Jl. Kopi No. 123
                     <br />
-                    Jakarta Selatan, 12345
+                    Ilir Barat I, Palembang 30111
                     <br />
-                    Indonesia
+                    Sumatera Selatan, Indonesia
                   </p>
                 </div>
 
                 <div>
                   <h4 className="text-lg font-medium text-gray-900 mb-2">
-                    Transportasi
+                    Transportation
                   </h4>
                   <ul className="text-gray-600 space-y-2">
                     <li className="flex items-start">
                       <span className="mr-2">🚗</span>
-                      <span>Parkir tersedia di basement</span>
-                    </li>
-                    <li className="flex items-start">
-                      <span className="mr-2">🚇</span>
-                      <span>5 menit dari Stasiun MRT Senayan</span>
+                      <span>Parking available in the front area</span>
                     </li>
                     <li className="flex items-start">
                       <span className="mr-2">🚌</span>
-                      <span>Bus Transjakarta Halte Senayan</span>
+                      <span>5 minutes from Trans Musi Bus Stop</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="mr-2">🚕</span>
+                      <span>Online taxi services available</span>
                     </li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="text-lg font-medium text-gray-900 mb-2">
-                    Jam Operasional
+                    Business Hours
                   </h4>
                   <ul className="text-gray-600 space-y-1">
                     <li className="flex justify-between">
-                      <span>Senin - Jumat:</span>
+                      <span>Monday - Friday:</span>
                       <span>07:00 - 22:00</span>
                     </li>
                     <li className="flex justify-between">
-                      <span>Sabtu - Minggu:</span>
+                      <span>Saturday - Sunday:</span>
                       <span>08:00 - 23:00</span>
                     </li>
                     <li className="flex justify-between">
-                      <span>Hari Libur:</span>
+                      <span>Holidays:</span>
                       <span>08:00 - 22:00</span>
                     </li>
                   </ul>
@@ -568,30 +594,29 @@ function FaqSection() {
 
   const faqs = [
     {
-      question:
-        "Apakah CoffeeBean Co. menerima pesanan kopi dalam jumlah besar?",
+      question: "Does CoffeeBean Co. accept bulk coffee orders?",
       answer:
-        "Ya, kami menerima pesanan kopi dalam jumlah besar untuk acara, kantor, atau kebutuhan bisnis lainnya. Silakan hubungi kami melalui formulir kontak dengan subjek 'Kerjasama Bisnis' atau kirim email ke wholesale@coffeebean.co.id untuk mendapatkan penawaran khusus.",
+        "Yes, we accept bulk coffee orders for events, offices, or other business needs. Please contact us through the contact form with the subject 'Business Cooperation' or send an email to wholesale@coffeebean.co.id for a special offer.",
     },
     {
-      question: "Bagaimana cara memesan kopi online dari CoffeeBean Co.?",
+      question: "How do I order coffee online from CoffeeBean Co.?",
       answer:
-        "Anda dapat memesan kopi kami secara online melalui website resmi kami di halaman Produk. Pilih kopi yang Anda inginkan, tambahkan ke keranjang, dan selesaikan pembayaran. Kami akan mengirimkan pesanan Anda dalam 1-3 hari kerja.",
+        "You can order our coffee online through our official website on the Products page. Select the coffee you want, add it to the cart, and complete the payment. We will ship your order within 1-3 business days.",
     },
     {
-      question: "Apakah CoffeeBean Co. menyediakan layanan pengiriman?",
+      question: "Does CoffeeBean Co. provide delivery services?",
       answer:
-        "Ya, kami menyediakan layanan pengiriman ke seluruh Indonesia. Biaya pengiriman bervariasi tergantung lokasi dan berat pesanan. Untuk pengiriman di area Jakarta, kami juga menyediakan layanan same-day delivery untuk pesanan yang dilakukan sebelum pukul 12.00 WIB.",
+        "Yes, we provide delivery services throughout Indonesia. Shipping costs vary depending on the location and weight of the order. For deliveries in the Palembang area, we also provide same-day delivery services for orders placed before 12:00 PM WIB.",
     },
     {
-      question: "Apakah CoffeeBean Co. menerima reservasi untuk acara khusus?",
+      question: "Does CoffeeBean Co. accept reservations for special events?",
       answer:
-        "Ya, kami menerima reservasi untuk acara khusus seperti ulang tahun, gathering, atau meeting. Kami memiliki ruang private yang dapat menampung hingga 20 orang. Untuk reservasi, silakan hubungi kami minimal 3 hari sebelum acara.",
+        "Yes, we accept reservations for special events such as birthdays, gatherings, or meetings. We have a private room that can accommodate up to 20 people. For reservations, please contact us at least 3 days before the event.",
     },
     {
-      question: "Apakah CoffeeBean Co. menyediakan workshop atau kelas kopi?",
+      question: "Does CoffeeBean Co. provide coffee workshops or classes?",
       answer:
-        "Ya, kami secara rutin mengadakan workshop dan kelas kopi untuk berbagai level, mulai dari pemula hingga barista profesional. Jadwal workshop dapat dilihat di halaman Events atau ikuti media sosial kami untuk informasi terbaru.",
+        "Yes, we regularly hold coffee workshops and classes for various levels, from beginners to professional baristas. The workshop schedule can be viewed on the Events page or follow our social media for the latest information.",
     },
   ];
 
@@ -603,11 +628,10 @@ function FaqSection() {
             <span className="font-medium">FAQ</span>
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            Pertanyaan yang Sering Diajukan
+            Frequently Asked Questions
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Temukan jawaban untuk pertanyaan umum tentang produk dan layanan
-            kami.
+            Find answers to common questions about our products and services.
           </p>
         </div>
 
@@ -646,12 +670,12 @@ function FaqSection() {
           </div>
 
           <div className="mt-12 text-center">
-            <p className="text-gray-600 mb-6">Masih punya pertanyaan lain?</p>
+            <p className="text-gray-600 mb-6">Still have other questions?</p>
             <a
               href="#"
               className="inline-flex items-center bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:shadow-lg"
             >
-              Hubungi Tim Kami
+              Contact Our Team
               <span className="ml-2">→</span>
             </a>
           </div>

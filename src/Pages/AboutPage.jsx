@@ -262,9 +262,9 @@ function OurTeam() {
 
   const team = [
     {
-      name: "Budi Santoso",
+      name: "James Mitchell",
       role: "Founder & CEO",
-      bio: "Coffee enthusiast with 15+ years in the industry and a passion for Indonesian coffee varieties. Budi has traveled to over 20 countries studying coffee cultivation techniques and has been recognized as a leading voice in sustainable coffee production in Southeast Asia.",
+      bio: "Coffee enthusiast with 15+ years in the industry and a passion for Indonesian coffee varieties. James has traveled to over 20 countries studying coffee cultivation techniques and has been recognized as a leading voice in sustainable coffee production in Southeast Asia.",
       expertise: [
         "Strategic Leadership",
         "Coffee Sourcing",
@@ -272,27 +272,33 @@ function OurTeam() {
       ],
       icon: "☕",
       color: "from-amber-500 to-amber-600",
+      image:
+        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face",
     },
     {
-      name: "Dewi Lestari",
+      name: "Sarah Thompson",
       role: "Head of Coffee Sourcing",
-      bio: "Expert in identifying premium beans and building relationships with coffee farmers across Indonesia. With a background in agricultural science, Dewi works directly with farming communities to improve cultivation practices and ensure fair compensation.",
+      bio: "Expert in identifying premium beans and building relationships with coffee farmers across Indonesia. With a background in agricultural science, Sarah works directly with farming communities to improve cultivation practices and ensure fair compensation.",
       expertise: ["Bean Selection", "Farmer Relations", "Quality Control"],
       icon: "🌱",
       color: "from-green-500 to-green-600",
+      image:
+        "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&crop=face",
     },
     {
-      name: "Agus Wijaya",
+      name: "Michael Roberts",
       role: "Master Roaster",
-      bio: "Award-winning roaster who perfects our signature blends and single-origin offerings. Agus trained in Italy and has developed a unique roasting style that brings out the distinctive characteristics of Indonesian coffee beans.",
+      bio: "Award-winning roaster who perfects our signature blends and single-origin offerings. Michael trained in Italy and has developed a unique roasting style that brings out the distinctive characteristics of Indonesian coffee beans.",
       expertise: ["Roasting Techniques", "Flavor Profiling", "Blend Creation"],
       icon: "🔥",
       color: "from-red-500 to-red-600",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
     },
     {
-      name: "Siti Rahayu",
+      name: "Emma Wilson",
       role: "Workshop Director",
-      bio: "Passionate educator who leads our coffee workshops and training programs. With a background in hospitality and education, Siti has designed immersive learning experiences that have trained over 500 baristas and coffee enthusiasts.",
+      bio: "Passionate educator who leads our coffee workshops and training programs. With a background in hospitality and education, Emma has designed immersive learning experiences that have trained over 500 baristas and coffee enthusiasts.",
       expertise: [
         "Training & Development",
         "Customer Experience",
@@ -300,6 +306,8 @@ function OurTeam() {
       ],
       icon: "📚",
       color: "from-blue-500 to-blue-600",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
     },
   ];
 
@@ -342,10 +350,21 @@ function OurTeam() {
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 shadow-lg max-w-4xl mx-auto">
           <div className="grid md:grid-cols-5 gap-8 items-center">
             <div className="md:col-span-1">
-              <div
-                className={`bg-gradient-to-r ${team[activeTab].color} w-24 h-24 rounded-full flex items-center justify-center text-white mx-auto text-4xl shadow-lg`}
-              >
-                {team[activeTab].icon}
+              <div className="relative">
+                <img
+                  src={team[activeTab].image || "/placeholder.svg"}
+                  alt={team[activeTab].name}
+                  className="w-24 h-24 rounded-full object-cover mx-auto shadow-lg border-4 border-white"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = "/placeholder.svg?height=96&width=96";
+                  }}
+                />
+                <div
+                  className={`absolute -bottom-2 -right-2 bg-gradient-to-r ${team[activeTab].color} w-8 h-8 rounded-full flex items-center justify-center text-white text-sm shadow-lg`}
+                >
+                  {team[activeTab].icon}
+                </div>
               </div>
             </div>
             <div className="md:col-span-4">
