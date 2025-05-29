@@ -1,11 +1,12 @@
 import React from "react";
 import NavBar from "./NavBar";
+import Footer from "./Footer";
 
 function AboutPage() {
   return (
     <>
       <NavBar />
-      <h1>halo</h1>
+      <Footer />
     </>
   );
 }

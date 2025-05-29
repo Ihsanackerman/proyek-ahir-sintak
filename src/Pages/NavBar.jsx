@@ -23,7 +23,7 @@ function NavBar() {
     { path: "/about", label: "About Us" },
     { path: "/product", label: "Product" },
     { path: "/contact", label: "Contact" },
-    { path: "/gallery", label: "Gallery" },
+    { path: "/galeri", label: "Gallery" },
   ];
 
   return (
