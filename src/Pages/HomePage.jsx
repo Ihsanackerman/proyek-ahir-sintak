@@ -342,7 +342,7 @@ function OurProducts({ onOrderNow }) {
 function ClientTestimonials() {
   const testimonials = [
     {
-      name: "Ahmad Rizki",
+      name: "John Doe",
       role: "CEO Global Beans Co.",
       quote:
         "We've sourced from many suppliers, but CoffeeBean Co. stands out for consistency and flavor. Their beans are the foundation of our premium blends.",
